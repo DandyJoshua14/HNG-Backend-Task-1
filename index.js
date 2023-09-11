@@ -6,6 +6,8 @@ const date = new Date().getDay()
 console.log(date)
 let day;
 
+const utd = new Date().getUTCDate()
+console.log("UTC: ", utd)
 function validateUTC() {
     const currentUTC = new Date().getTime();
     const twoMinutesInMilliseconds = 2 * 60 * 1000; // 2 minutes in milliseconds
@@ -45,17 +47,19 @@ switch (date) {
         day = "Today is a great day"
         break;       
 }
+
+
                 
 app.get("/api", (req, res, next) => {
     const slack_name = req.query.slack_name || "Dandy Joshua"
     const current_day = day
-    const utc_time = new Date().toUTCString()
+    const utc_time = new Date()
     const track = req.query.track || "Backend"
     const github_file_url = "https://github.com/DandyJoshua14/HNG-Backend-Track/blob/main/index.js"
     const github_repo_url = "https://github.com/DandyJoshua14/HNG-Backend-Track.git"
     const status_code = 200
     const isUTCValid = validateUTC();
-
+    
   if (!isUTCValid) {
     res.status(500).json({ error: "UTC time is not within the specified range." });
   } else {
