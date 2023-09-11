@@ -49,11 +49,20 @@ switch (date) {
 }
 
 
-                
+const currentDate = new Date();
+const year = currentDate.getUTCFullYear();
+const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0');
+const newday = String(currentDate.getUTCDate()).padStart(2, '0');
+const hours = String(currentDate.getUTCHours()).padStart(2, '0');
+const minutes = String(currentDate.getUTCMinutes()).padStart(2, '0');
+const seconds = String(currentDate.getUTCSeconds()).padStart(2, '0');
+
+const formattedDate = `${year}-${month}-${newday}T${hours}:${minutes}:${seconds}Z`;
+console.log(formattedDate);
 app.get("/api", (req, res, next) => {
     const slack_name = req.query.slack_name || "Dandy Joshua"
     const current_day = day
-    const utc_time = new Date()
+    const utc_time = formattedDate
     const track = req.query.track || "Backend"
     const github_file_url = "https://github.com/DandyJoshua14/HNG-Backend-Track/blob/main/index.js"
     const github_repo_url = "https://github.com/DandyJoshua14/HNG-Backend-Track.git"
