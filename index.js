@@ -62,7 +62,7 @@ console.log(formattedDate);
 app.get("/api", (req, res, next) => {
     const slack_name = req.query.slack_name || "Dandy Joshua"
     const current_day = day
-    const utc_time = formattedDate
+    const utc_time = new Date().toISOString()
     const track = req.query.track || "Backend"
     const github_file_url = "https://github.com/DandyJoshua14/HNG-Backend-Track/blob/main/index.js"
     const github_repo_url = "https://github.com/DandyJoshua14/HNG-Backend-Track.git"
