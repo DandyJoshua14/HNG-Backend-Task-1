@@ -87,7 +87,7 @@ const isUTCValid = validateUTC();
     definePath(req.path)
 })
 
-app.post('/api/create-user', async(req, res, next) => {
+app.post('/api', async(req, res, next) => {
     if (req.body && req.body.username && req.body.password && req.body.firstname && req.body.lastname && req.body.phone && req.body.DOB && req.body.email && req.body.gender && req.body.address) {
     const { username, password, firstname, lastname, DOB, email, gender, address, phone } = req.body;
     // console.log(username, password, firstname, lastname, DOB, email, gender, address, phone);
