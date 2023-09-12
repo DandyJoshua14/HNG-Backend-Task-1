@@ -15,6 +15,7 @@ For the `POST` methos, you will need to have the following information passed as
 - gender
 - address
 - phone
+
 The phone number you will use will automatically be your ID. Make sure you start with your country's code (eg: +234).
 
 #### 2. /api/user_id
