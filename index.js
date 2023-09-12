@@ -111,6 +111,28 @@ app.get('/api/:user_id', async(req, res, next) => {
 
 })
 
+
+// Update an existing user by user ID
+app.put('/api/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const updatedData = req.body; // The updated data for the user
+
+    // Use the updateOne method to update the user by ID
+    const result = await User.updateOne({ phone: userId }, { $set: updatedData });
+    
+    if (result.nModified === 0) {
+      return res.status(404).json({ message: 'User not found or no changes were made'});
+    }
+     
+    res.json({ message: 'User updated successfully',  });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+});
+
+
     const listener = app.listen(3000, () => {
         console.log("Application is listening on port " + listener.address().port);
     })

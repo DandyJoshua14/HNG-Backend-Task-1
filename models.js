@@ -10,6 +10,7 @@ export function connect() {
 
 const userSchema = new mongoose.Schema({
     id: String,
+    username: String,
     name: String,
     email: String,
     firstname: String,
