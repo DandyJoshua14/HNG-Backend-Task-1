@@ -101,6 +101,11 @@ app.post('/api', async(req, res, next) => {
   }
 })
 
+app.get('/api/:user_id', async(req, res, next) => {
+  const user = await User.findOne({phone: req.params.user_id})
+  res.json(user)
+
+})
 
     const listener = app.listen(3000, () => {
         console.log("Application is listening on port " + listener.address().port);
