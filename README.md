@@ -19,4 +19,4 @@ For the `POST` methos, you will need to have the following information passed as
 The phone number you will use will automatically be your ID. Make sure you start with your country's code (eg: +234).
 
 #### 2. /api/user_id
-This endpoint returns a specific user based on the user's ID which is the phone number a user used to create his/her account. Therefore in place of `user_id`, pass in your desired phone
+This endpoint returns a specific user based on the user's ID which is the phone number a user used to create his/her account. Therefore in place of `user_id`, pass in your registered phone number
