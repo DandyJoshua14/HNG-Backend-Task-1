@@ -1,17 +1,19 @@
 import express from "express";
+import {v4 as uuidv4} from 'uuid'
+import { connect } from "./models.js";
 
+connect();
 const app = express();
-
 const date = new Date().getDay()
-console.log(date)
 let day;
-
+let id = uuidv4()
 const utd = new Date().getUTCDate()
 console.log("UTC: ", utd)
+console.log(date)
 function validateUTC() {
-    const currentUTC = new Date().getTime();
-    const twoMinutesInMilliseconds = 2 * 60 * 1000; // 2 minutes in milliseconds
-    const minAllowedTime = currentUTC - twoMinutesInMilliseconds;
+  const currentUTC = new Date().getTime();
+  const twoMinutesInMilliseconds = 2 * 60 * 1000; // 2 minutes in milliseconds
+  const minAllowedTime = currentUTC - twoMinutesInMilliseconds;
     const maxAllowedTime = currentUTC + twoMinutesInMilliseconds;
     const currentTime = new Date().getTime();
     return currentTime >= minAllowedTime && currentTime <= maxAllowedTime;
@@ -28,7 +30,7 @@ switch (date) {
     case 1:
         day = "Monday"
         break;
-    case 2:
+        case 2:
         day = "Tuesday"
         break;
     case 3:
@@ -41,8 +43,8 @@ switch (date) {
         day = "Friday"
         break;
     case 6:
-        day = "Saturday"
-        break;
+      day = "Saturday"
+      break;
     default:
         day = "Today is a great day"
         break;       
@@ -51,6 +53,7 @@ switch (date) {
 
 
 
+app.use(express.json())
 app.get("/api", (req, res, next) => {
     const currentDate = new Date();
 const year = currentDate.getUTCFullYear();
@@ -59,18 +62,15 @@ const newday = String(currentDate.getUTCDate()).padStart(2, '0');
 const hours = String(currentDate.getUTCHours()).padStart(2, '0');
 const minutes = String(currentDate.getUTCMinutes()).padStart(2, '0');
 const seconds = String(currentDate.getUTCSeconds()).padStart(2, '0');
-
-const formattedDate = `${year}-${month}-${newday}T${hours}:${minutes}:${seconds}Z`;
-    
-    const slack_name = req.query.slack_name || "Dandy Joshua"
-    const current_day = day
-    const utc_time = formattedDate
-    const track = req.query.track || "Backend"
-    const github_file_url = "https://github.com/DandyJoshua14/HNG-Backend-Track/blob/main/index.js"
-    const github_repo_url = "https://github.com/DandyJoshua14/HNG-Backend-Track.git"
-    const status_code = 200
-    const isUTCValid = validateUTC();
-    
+const formattedDate = `${year}-${month}-${newday}T${hours}:${minutes}:${seconds}Z`;    
+const slack_name = req.query.slack_name || "Dandy Joshua"
+const current_day = day
+const utc_time = formattedDate
+const track = req.query.track || "Backend"
+const github_file_url = "https://github.com/DandyJoshua14/HNG-Backend-Track/blob/main/index.js"
+const github_repo_url = "https://github.com/DandyJoshua14/HNG-Backend-Track.git"
+const status_code = 200
+const isUTCValid = validateUTC();  
   if (!isUTCValid) {
     res.status(500).json({ error: "UTC time is not within the specified range." });
   } else {
@@ -83,9 +83,18 @@ const formattedDate = `${year}-${month}-${newday}T${hours}:${minutes}:${seconds}
       github_repo_url,
       status_code
     });
-  }
-       
+  }       
     definePath(req.path)
+})
+
+app.post('/api/create-user', (req, res, next) => {
+    if (req.body && req.body.username && req.body.password && req.body.firstname && req.body.lastname && req.body.DOB && req.body.email && req.body.gender && req.body.address) {
+    const { username, password, firstname, lastname, DOB, email, gender, address } = req.body;
+    console.log(username, password, firstname, lastname, DOB, email, gender, address);
+    res.json({ message: "User successfully created", details: { username, password, firstname, lastname, DOB, email, gender, address, id } });
+  } else {
+    res.status(500).json({ message: "An error occurred. Make sure you have all details filled" });
+  }
 })
 
 
