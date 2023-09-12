@@ -1,7 +1,7 @@
 import express from "express";
 import {v4 as uuidv4} from 'uuid'
 import { connect } from "./models.js";
-
+import { User } from "./models.js";
 connect();
 const app = express();
 const date = new Date().getDay()
@@ -87,11 +87,15 @@ const isUTCValid = validateUTC();
     definePath(req.path)
 })
 
-app.post('/api/create-user', (req, res, next) => {
-    if (req.body && req.body.username && req.body.password && req.body.firstname && req.body.lastname && req.body.DOB && req.body.email && req.body.gender && req.body.address) {
-    const { username, password, firstname, lastname, DOB, email, gender, address } = req.body;
-    console.log(username, password, firstname, lastname, DOB, email, gender, address);
-    res.json({ message: "User successfully created", details: { username, password, firstname, lastname, DOB, email, gender, address, id } });
+app.post('/api/create-user', async(req, res, next) => {
+    if (req.body && req.body.username && req.body.password && req.body.firstname && req.body.lastname && req.body.phone && req.body.DOB && req.body.email && req.body.gender && req.body.address) {
+    const { username, password, firstname, lastname, DOB, email, gender, address, phone } = req.body;
+    // console.log(username, password, firstname, lastname, DOB, email, gender, address, phone);
+    const user = await User.create({
+      id, username, password, firstname, lastname, DOB, email, gender, address, phone
+    })
+    user.save()
+    res.json({ message: "User successfully created", details: { id, username, password, firstname, lastname, DOB, email, gender, address, phone } });
   } else {
     res.status(500).json({ message: "An error occurred. Make sure you have all details filled" });
   }
