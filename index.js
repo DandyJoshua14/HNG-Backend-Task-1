@@ -101,6 +101,8 @@ app.post('/api', async(req, res, next) => {
   }
 })
 
+
+// Get a Specific User by user ID
 app.get('/api/:user_id', async(req, res, next) => {
   const user = await User.findOne({phone: req.params.user_id})
   if (!user) {
@@ -113,9 +115,9 @@ app.get('/api/:user_id', async(req, res, next) => {
 
 
 // Update an existing user by user ID
-app.put('/api/:userId', async (req, res, next) => {
+app.put('/api/:user_id', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.params.user_id;
     const updatedData = req.body; // The updated data for the user
 
     // Use the updateOne method to update the user by ID
@@ -132,6 +134,20 @@ app.put('/api/:userId', async (req, res, next) => {
   }
 });
 
+app.delete("/api/:user_id", async(req, res, next) => {
+  try {
+    const userId = req.params.user_id
+    const result = await User.deleteOne({ phone: userId })
+  
+    if(result.deletedCount == 0) {
+      return res.status(404).json({ message: 'User not found'});
+    }
+    res.json({ message: "User Deleted"})
+  } catch (err) {
+    console.error("An Error Occured When Deleting User: ", error)
+    res.status(500).json({ message: "An Error Occured"})
+  }
+})
 
     const listener = app.listen(3000, () => {
         console.log("Application is listening on port " + listener.address().port);
